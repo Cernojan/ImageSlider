@@ -1,10 +1,10 @@
 class SlidingImage {
     constructor(duration, imageCount) {
         this.imageCount = imageCount;
-        this.imgSrc = this.createPath(this.getRandomInteger(1, this.imageCount));
         this.duration = duration;
-        this.side = "right";
+        this.side = this.pickSide();
         this.options = this.shuffle(this.generateImages(imageCount));
+        this.imgSrc = this.options[this.getRandomInteger(0, imageCount - 1)];
         this.position = 0;
         this.maxPosition = window.innerWidth;
         this.interval = null;
@@ -107,9 +107,17 @@ class SlidingImage {
 
     generateImages(imageCount) {
         let data = [];
+        let usedNumbers = [];
 
         for (let i = 1; i <= imageCount; i++) {
-            data.push("images/data/" + i + ".png");
+            let randomNumber = this.getRandomInteger(1, 14);
+
+            if (usedNumbers.includes(randomNumber)) {
+              i--;
+            } else {
+              usedNumbers.push(randomNumber);
+              data.push("images/data/" + randomNumber + ".png");
+            }
         }
 
         return data;
@@ -128,18 +136,14 @@ class SlidingImage {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    createPath(number) {
-        return "images/data/" + number + ".png";
-    }
-
     nextLevel() {
         document.querySelector(".options-container").remove();
-        
+        this.options = this.generateImages(this.imageCount);
         this.shuffle(this.options);
         this.side = this.pickSide();
         console.log(this.side);
-        this.imgSrc = this.createPath(this.getRandomInteger(1, this.imageCount));
-        this.postionCounterUp++;
+        this.imgSrc = this.options[this.getRandomInteger(0, this.imageCount - 1)];
+        this.postionCounterUp += 0.2;
         this.levelCounter++;
         this.start();
     }
@@ -148,5 +152,11 @@ class SlidingImage {
         let items = ["left", "right"];
 
         return items[Math.round(Math.random())];
+    }
+
+    isNumberUnused(array, number) {
+        if (number.includes(number)) {
+
+        }
     }
   }
