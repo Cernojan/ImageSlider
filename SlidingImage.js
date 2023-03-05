@@ -42,8 +42,11 @@ class SlidingImage {
         if (this.position >= this.maxPosition) {
           clearInterval(this.interval);
           this.position = 0;
-          this.showOptions();
-          this.changeLabel("Vyber správný obrázek", "label");
+      
+          setTimeout(() => {
+            this.showOptions();
+            this.changeLabel("Vyber správný obrázek", "label");
+          }, 1000);
         } else {
           this.position = this.position += this.postionCounterUp;
           this.imgElement.style[this.side] = this.position + "px";
@@ -88,6 +91,10 @@ class SlidingImage {
         });
       });
   
+      //let exitWidget = document.getElementById("exitWidget");
+      //exitWidget.style.display = "block";
+      //optionsContainer.insertBefore(exitWidget, null);
+
       document.body.appendChild(optionsContainer);
     }
   
@@ -145,7 +152,10 @@ class SlidingImage {
         this.imgSrc = this.options[this.getRandomInteger(0, this.imageCount - 1)];
         this.postionCounterUp += 0.2;
         this.levelCounter++;
-        this.start();
+
+        setTimeout(() => {
+          this.start();
+        }, 1000);
     }
 
     pickSide() {
